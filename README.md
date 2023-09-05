@@ -44,7 +44,7 @@ Lembre-se que você pode consultar nosso conteúdo sobre [Git & GitHub](https://
 	
 - São `4` dias de projeto
 	
-- Data para entrega do projeto: `dd/mm/yyyy - 23:59h`
+- Data para entrega do projeto: `05/10/2023 - 23:59h`
 	
 	
 </details><br />
