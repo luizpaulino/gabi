@@ -41,13 +41,13 @@ describe('handlerElephants', () => {
     expect(result).toEqual(expected);
   });
 
-  it('não deve lançar erro para opção inválida', () => {
+  it('deve lançar um erro para uma opção inválida', () => {
     const option = 'invalidOption';
-    expect(() => handlerElephants(option)).not.toThrow();
+    expect(() => handlerElephants(option)).toThrowError('Opção inválida');
   });
 
-  it('não deve lançar erro para opção vazia', () => {
+  it('deve lançar um erro para opção vazia', () => {
     const option = '';
-    expect(() => handlerElephants(option)).not.toThrow();
+    expect(() => handlerElephants(option)).toThrowError('Opção inválida');
   });
 });

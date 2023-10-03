@@ -1,62 +1,64 @@
 const { hours } = require('../data/zoo_data');
 
-const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const dayError = 'The day must be valid. Example: Monday';
-
-const isStringRepresentNumber = (string, what) => {
-  const num = Number(string);
-  if (!isNaN(num) && Number.isInteger(num)) {
-    return true;
-  }
-  throw new Error(`The ${what} should represent a valid integer number`);
-};
-
-const validateHour = (hour) => {
-  if (hour) {
-    const [number] = hour.toUpperCase().split('-');
-    const [dataHours, dataMinutes] = number.split(':');
-    isStringRepresentNumber(dataHours, 'hour');
-    isStringRepresentNumber(dataMinutes, 'minutes');
-  }
-};
-
 const validateDay = (day) => {
+  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   if (!weekDays.includes(day)) {
-    throw new Error(dayError);
+    throw new Error('The day must be valid. Example: Monday');
   }
 };
-
-const empty = (one, two) => !one && !two;
-
-// const fix12 = (hour, open, close) => ({
-//   h: (hour === 12) ? 0 : hour,
-//   o: (open === 12) ? 0 : open,
-//   c: (close === 12) ? 0 : close,
-// });
-
-// const openOrClosed = (period, hour, open, close) => {
-//   const { o, c, h } = fix12(hour, open, close);
-//   return (period === 'AM' && h >= o) || (period === 'PM' && h < c);
-// };
 
 const getOpeningHours = (day, dataHour) => {
-  if (empty(day, dataHour)) return 'The zoo is closed';
-  const adjustedDay = `${day[0].toUpperCase()}${day.slice(1).toLowerCase()}`;
+  if (!day || !dataHour) return 'The zoo is closed';
+
+  const adjustedDay = day[0].toUpperCase() + day.slice(1).toLowerCase();
   validateDay(adjustedDay);
-  validateHour(dataHour);
-  const { open, close } = hours[adjustedDay];
-  if (empty(close, open)) return 'The zoo is closed';
 
-  const [hour, minutes] = dataHour.split(':').map(Number);
-  const [openHour, openMinutes] = open.split(':').map(Number);
-  const [closeHour, closeMinutes] = close.split(':').map(Number);
+  if (dataHour === 'The zoo is closed') {
+    return 'The zoo is closed';
+  }
 
-  if (
-    (hour > openHour || (hour === openHour && minutes >= openMinutes))
-    && (hour < closeHour || (hour === closeHour && minutes < closeMinutes))
-  ) {
+  const [time, period] = dataHour.split(' ');
+  const [openTime, closeTime] = [hours[adjustedDay].open, hours[adjustedDay].close].map(parseTime);
+
+  if (isWithinTimeRange(parseTime(time), openTime, closeTime, period)) {
     return 'The zoo is open';
   }
+
   return 'The zoo is closed';
 };
+
+const parseTime = (time) => {
+  if (typeof time !== 'string' || !time.match(/^\d{1,2}:\d{2} [APap][Mm]$/)) {
+    throw new Error('Invalid time format');
+  }
+
+  const timeParts = time.split(':');
+  const [hourStr, minuteAndPeriod] = timeParts;
+  const [minute, period] = minuteAndPeriod.split(' ');
+
+  const hour = parseInt(hourStr, 10);
+
+  if (isNaN(hour) || isNaN(parseInt(minute, 10))) {
+    throw new Error('Invalid time format');
+  }
+
+  if (hour < 0 || hour > 12 || parseInt(minute, 10) < 0 || parseInt(minute, 10) > 59) {
+    throw new Error('Invalid time format');
+  }
+
+  return { hour, minute: parseInt(minute, 10), period };
+};
+
+const isWithinTimeRange = (current, start, end, period) => {
+  if (period === 'AM' && (current.hour < start.hour || (current.hour === start.hour && current.minute < start.minute))) {
+    return false;
+  }
+
+  if (period === 'PM' && (current.hour > end.hour || (current.hour === end.hour && current.minute >= end.minute))) {
+    return false;
+  }
+
+  return true;
+};
+
 module.exports = getOpeningHours;

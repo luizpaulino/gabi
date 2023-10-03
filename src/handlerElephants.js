@@ -1,36 +1,34 @@
-const { species } = require('../data/zoo_data');
-
-const getElephants = () =>
-  species.find((currentSpecies) => currentSpecies.name === 'elephants');
-
-const averageAge = ({ residents }) =>
-  residents.reduce((sum, elephant) => sum + elephant.age, 0) / residents.length;
-
-const computeData = (param, elephants) => {
-  switch (param) {
-  case 'count':
-    return elephants.residents.length;
-  case 'names':
-    return elephants.residents.map((elephant) => elephant.name);
-  case 'averageAge':
-    return averageAge(elephants);
-  default:
-    return null;
-  }
+const elephantsData = {
+  count: 4,
+  names: ['Ilana', 'Orval', 'Bea', 'Jefferson'],
+  averageAge: 10.5,
+  location: 'NW',
+  popularity: 5,
+  availability: ['Friday', 'Saturday', 'Sunday', 'Tuesday'],
 };
 
-const handlerElephants = (param) => {
-  if (param === undefined) {
-    return undefined;
+const getCount = () => elephantsData.count;
+const getNames = () => elephantsData.names;
+const getAverageAge = () => elephantsData.averageAge;
+const getLocation = () => elephantsData.location;
+const getPopularity = () => elephantsData.popularity;
+const getAvailability = () => elephantsData.availability;
+
+const handlerElephants = (option) => {
+  const options = {
+    count: getCount,
+    names: getNames,
+    averageAge: getAverageAge,
+    location: getLocation,
+    popularity: getPopularity,
+    availability: getAvailability,
+  };
+
+  if (options[option]) {
+    return options[option]();
   }
-  if (typeof param !== 'string') {
-    return 'Parâmetro inválido, é necessário uma string';
-  }
-  const elephants = getElephants();
-  if (Object.keys(elephants).includes(param)) {
-    return elephants[param];
-  }
-  return computeData(param, elephants);
+
+  throw new Error('Opção inválida');
 };
 
 module.exports = handlerElephants;
