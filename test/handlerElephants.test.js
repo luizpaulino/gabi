@@ -40,4 +40,14 @@ describe('handlerElephants', () => {
     const expected = ['Friday', 'Saturday', 'Sunday', 'Tuesday'];
     expect(result).toEqual(expected);
   });
+
+  it('não deve lançar erro para opção inválida', () => {
+    const option = 'invalidOption';
+    expect(() => handlerElephants(option)).not.toThrow();
+  });
+
+  it('não deve lançar erro para opção vazia', () => {
+    const option = '';
+    expect(() => handlerElephants(option)).not.toThrow();
+  });
 });
