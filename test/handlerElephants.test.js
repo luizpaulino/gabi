@@ -1,16 +1,5 @@
 const handlerElephants = require('../src/handlerElephants');
 
-const species = [
-  {
-    id: 'elephants',
-    residents: [
-      { name: 'Ilana', age: 12, location: 'NW', popularity: 3 },
-
-    ],
-  },
-];
-const elephantsId = 'elephants';
-
 describe('handlerElephants', () => {
   it('deve retornar a quantidade de elefantes', () => {
     const option = 'count';
@@ -41,7 +30,7 @@ describe('handlerElephants', () => {
   it('deve retornar a popularidade dos elefantes', () => {
     const option = 'popularity';
     const result = handlerElephants(option);
-    const expected = 5; 
+    const expected = 5;
     expect(result).toBe(expected);
   });
 
@@ -52,5 +41,3 @@ describe('handlerElephants', () => {
     expect(result).toEqual(expected);
   });
 });
-
-
