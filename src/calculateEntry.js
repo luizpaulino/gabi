@@ -1,38 +1,40 @@
 const data = require('../data/zoo_data');
 
-function findEmployeeById(id) {
-  return data.employees.find((employee) => employee.id === id);
-}
+const classifyEntrant = (age) => {
+  if (age >= 60) return 'senior';
+  if (age >= 18) return 'adult';
+  return 'child';
+};
 
-function findSpeciesById(speciesId) {
-  return data.species.find((species) => species.id === speciesId);
-}
+const countEntrants = (entrants) => {
+  const counts = {
+    adult: 0,
+    child: 0,
+    senior: 0,
+  };
 
-function findOldestAnimal(residents) {
-  return residents.reduce((oldestAnimal, animal) => {
-    if (animal.age > oldestAnimal.age) {
-      return animal;
+  if (entrants && Array.isArray(entrants)) {
+    for (const entrant of entrants) {
+      const category = classifyEntrant(entrant.age);
+      counts[category] += 1;
     }
-    return oldestAnimal;
-  });
-}
-
-function getOldestFromFirstSpecies(id) {
-  const employee = findEmployeeById(id);
-
-  if (employee) {
-    const firstSpeciesId = employee.responsibleFor[0];
-    const species = findSpeciesById(firstSpeciesId);
-
-    if (species && species.residents.length > 0) {
-      const oldestAnimal = findOldestAnimal(species.residents);
-      return [oldestAnimal.name, oldestAnimal.sex, oldestAnimal.age];
-    }
-
-    return [];
   }
 
-  return null;
-}
+  return counts;
+};
+
+const calculateEntry = (entrants) => {
+  const counts = countEntrants(entrants);
+
+  // Certifique-se de que todas as propriedades estejam definidas
+  counts.adult = counts.adult || 0;
+  counts.child = counts.child || 0;
+  counts.senior = counts.senior || 0;
+
+  // Calcule o valor total da entrada
+  const total = counts.adult * 49.99 + counts.child * 24.99 + counts.senior * 34.99;
+
+  return parseFloat(total.toFixed(2));
+};
 
 module.exports = { calculateEntry, countEntrants };
