@@ -17,7 +17,7 @@ const getAnimalMap = (options) => {
     if (options && options.sex) {
       animals = animals.filter((animal) => {
         const speciesData = data.species.find(
-          (species) => species.location === location && species.name === animal
+          (species) => species.location === location && species.name === animal,
         );
         return speciesData.residents.some((resident) => resident.sex === options.sex);
       });
@@ -26,22 +26,23 @@ const getAnimalMap = (options) => {
     if (options && (options.sex === 'female' || options.sex === 'male')) {
       animals = animals.filter((animal) => {
         const speciesData = data.species.find(
-          (species) => species.location === location && species.name === animal
+          (species) => species.location === location && species.name === animal,
         );
         return speciesData.residents.some((resident) => resident.sex === options.sex);
       });
 
-      animals.sort(); 
+      animals.sort();
 
-    filteredData[location] = animals;
+      filteredData[location] = animals;
+    }
+
+    // Ordena os nomes dos animais para cada localização.
+    Object.keys(filteredData).forEach((location) => {
+      filteredData[location].sort();
+    });
+
+    return filteredData;
   });
-
-  // Ordena os nomes dos animais para cada localização.
-  Object.keys(filteredData).forEach((location) => {
-    filteredData[location].sort();
-  });
-
-  return filteredData;
 };
 
 module.exports = getAnimalMap;
