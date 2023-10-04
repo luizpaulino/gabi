@@ -11,7 +11,7 @@ describe('8 - Implemente a função `calculateEntry` que calcula o valor total d
       { name: faker.person.fullName(), age: 18 },
       { name: faker.person.fullName(), age: 50 },
     ];
-
+  
     const actual = countEntrants(entrants);
     const expected = { adult: 2, child: 3, senior: 1 };
     expect(actual).toEqual(expected);

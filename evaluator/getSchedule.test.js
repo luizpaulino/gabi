@@ -4,13 +4,13 @@ describe('9 - Implemente a função `getSchedule` para disponibilizar um cronogr
   it('se for passado um animal, deverá retornar um array com os dias em que ele está em exibição', () => {
     {
       const actual = getSchedule('lions');
-      const expected = [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ];
+      const expected = ['Tuesday', 'Thursday', 'Saturday', 'Sunday'];
       expect(actual).toEqual(expected);
     }
 
     {
       const actual = getSchedule('penguins');
-      const expected = [ 'Tuesday', 'Wednesday', 'Sunday', 'Saturday' ];
+      const expected = ['Tuesday', 'Wednesday', 'Sunday', 'Saturday'];
       expect(actual).toEqual(expected);
     }
   });
