@@ -1,23 +1,37 @@
 const getOpeningHours = require('../src/getOpeningHours');
 
-describe('Testes da função getOpeningHours', () => {
-  it('deve retornar as horas de abertura para um dia válido e horário válido', () => {
+describe('getOpeningHours', () => {
+  test('Zoológico está aberto em um dia e horário específicos', () => {
     const day = 'Monday';
-    const validHour = '09:30'; // Formato correto: "HH:MM"
-    const result = getOpeningHours(day, validHour);
+    const time = '10:30 AM';
+    const result = getOpeningHours(day, time);
     expect(result).toBe('The zoo is open');
   });
 
-  it('deve retornar "The zoo is closed" para um dia válido e horário de fechamento', () => {
+  test('Zoológico está fechado em um dia e horário específicos', () => {
     const day = 'Monday';
-    const invalidHour = '18:00'; // Formato correto: "HH:MM"
-    const result = getOpeningHours(day, invalidHour);
+    const time = '5:30 PM';
+    const result = getOpeningHours(day, time);
     expect(result).toBe('The zoo is closed');
   });
 
-  it('deve lançar um erro para um horário inválido', () => {
+  test('Dia inválido', () => {
+    const day = 'InvalidDay';
+    const time = '10:30 AM';
+    const result = () => getOpeningHours(day, time);
+    expect(result).toThrowError('The day must be valid. Example: Monday');
+  });
+
+  test('Hora inválida', () => {
+    const day = 'Monday';
+    const time = '10:30AM';
+    const result = () => getOpeningHours(day, time);
+    expect(result).toThrowError('Invalid time format');
+  });
+  test('Hora não especificada', () => {
     const day = 'Wednesday';
-    const invalidHour = '9:30 AM - 6:00 PM'; // Formato incorreto
-    expect(() => getOpeningHours(day, invalidHour)).toThrowError('Invalid time format');
+    const time = null;
+    const result = getOpeningHours(day, time);
+    expect(result).toBe('The zoo is closed');
   });
 });

@@ -1,8 +1,12 @@
 const data = require('../data/zoo_data');
 
 const isManager = (id) => {
-  const employee = data.employees.find((emp) => emp.id === id);
-  return employee && employee.managers.length > 0;
+  const managers = data.employees.reduce((acc, emp) => {
+    acc.push(...emp.managers);
+    return acc;
+  }, []);
+
+  return managers.includes(id);
 };
 
 const getRelatedEmployees = (managerId) => {
@@ -14,5 +18,3 @@ const getRelatedEmployees = (managerId) => {
 };
 
 module.exports = { isManager, getRelatedEmployees };
-
-console.log(isManager('9e7d4524-363c-416a-8759-8aa7e50c0992'));
