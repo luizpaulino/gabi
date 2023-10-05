@@ -26,15 +26,17 @@ const countEntrants = (entrants) => {
 const calculateEntry = (entrants) => {
   const counts = countEntrants(entrants);
 
-  // Certifique-se de que todas as propriedades estejam definidas
+  // Garanta que as contagens sejam números, mesmo que inicialmente sejam undefined
   counts.adult = counts.adult || 0;
   counts.child = counts.child || 0;
   counts.senior = counts.senior || 0;
 
-  // Calcule o valor total da entrada
-  const total = counts.adult * 49.99 + counts.child * 24.99 + counts.senior * 34.99;
+  // Calcule o valor total da entrada e ajuste para duas casas decimais
+  const total = (counts.adult * data.prices.adult +
+                 counts.child * data.prices.child +
+                 counts.senior * data.prices.senior).toFixed(2);
 
-  return parseFloat(total.toFixed(2));
+  return parseFloat(total);
 };
 
 module.exports = { calculateEntry, countEntrants };

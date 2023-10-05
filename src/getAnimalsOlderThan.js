@@ -1,12 +1,15 @@
 const data = require('../data/zoo_data');
 
 const getAnimalsOlderThan = (animal, age) => {
-  const animals = data.species.find((s) => s.name === animal).residents;
+  const speciesArray = data.species.filter((s) => s.name === animal);
 
-  if (!animals) {
+  if (speciesArray.length === 0) {
     return false;
   }
-  const allMeetAgeCriteria = animals.every((specie) => specie.age >= age);
+
+  const allMeetAgeCriteria = speciesArray.every((species) => {
+    return species.residents.every((resident) => resident.age >= age);
+  });
 
   return allMeetAgeCriteria;
 };

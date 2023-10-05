@@ -5,10 +5,9 @@ const getEmployeeByName = (employeeName) => {
     return {};
   }
 
-  const employee = data.employees.find((person) => {
-    const { firstName, lastName } = person;
-    return employeeName === firstName || employeeName === lastName;
-  });
+  const employee = data.employees.find(({ firstName, lastName }) => 
+    employeeName === firstName || employeeName === lastName
+  );
 
   return employee || {};
 };
